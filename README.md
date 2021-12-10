@@ -1,3 +1,10 @@
+# Plan
+
+1. добавление задачи
+2. редактирование задачи
+3. cписок пользователей со своими листами
+4. cохранение данных в localStorage
+
 # Init project
 
 `$ mkdir ~/projects/lecture_effector_live`

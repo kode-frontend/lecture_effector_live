@@ -1,4 +1,8 @@
+import { ComponentProps } from "react";
 import styled from "styled-components";
+
+import { TodoItem } from "../atoms";
+import { InputBlock } from "../molecules";
 
 const Wrapper = styled.div`
   max-width: 1024px;
@@ -9,6 +13,20 @@ const Wrapper = styled.div`
   border-radius: 12px;
 `;
 
-export const List = () => {
-  return <Wrapper>sdsdsd</Wrapper>;
+type Props = {
+  list: Omit<ComponentProps<typeof TodoItem>, "onClick">[];
+  onClick: (id: string) => void;
+  onAddTask: (title: string) => void;
+};
+
+export const List = ({ list, onClick, onAddTask }: Props) => {
+  return (
+    <Wrapper>
+      <InputBlock onAdd={onAddTask} />
+      <hr />
+      {list.map((l) => (
+        <TodoItem key={l.id} {...l} onClick={onClick} />
+      ))}
+    </Wrapper>
+  );
 };
