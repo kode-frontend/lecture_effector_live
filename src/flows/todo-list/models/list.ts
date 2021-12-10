@@ -22,6 +22,18 @@ $currentTask.reset(resetCurrentTask);
 
 export const $currentUserTasks = createStore<Task[]>([]);
 
+export const $todoList = $currentUserTasks.map((tasks) =>
+  tasks.filter((t) => t.status === "new")
+);
+
+export const $inprogressList = $currentUserTasks.map((tasks) =>
+  tasks.filter((t) => t.status === "progress")
+);
+
+export const $doneList = $currentUserTasks.map((tasks) =>
+  tasks.filter((t) => t.status === "done")
+);
+
 sample({
   clock: combine({ tasks: $tasks, currentUserId: $currentUser }),
   fn: ({ currentUserId, tasks }) => {

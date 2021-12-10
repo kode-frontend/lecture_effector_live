@@ -1,7 +1,5 @@
-import { ComponentProps } from "react";
 import styled from "styled-components";
 
-import { TodoItem } from "../atoms";
 import { InputBlock } from "../molecules";
 
 const Wrapper = styled.div`
@@ -13,20 +11,42 @@ const Wrapper = styled.div`
   border-radius: 12px;
 `;
 
+const Cols = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+`;
+
 type Props = {
-  list: Omit<ComponentProps<typeof TodoItem>, "onClick">[];
-  onClick: (id: string) => void;
+  todo: JSX.Element;
+  progress: JSX.Element;
+  done: JSX.Element;
+
   onAddTask: (title: string) => void;
 };
 
-export const List = ({ list, onClick, onAddTask }: Props) => {
+export const List = ({ done, progress, todo, onAddTask }: Props) => {
   return (
     <Wrapper>
       <InputBlock onAdd={onAddTask} />
       <hr />
-      {list.map((l) => (
-        <TodoItem key={l.id} {...l} onClick={onClick} />
-      ))}
+
+      <Cols>
+        <div>
+          <h2>To do</h2>
+          <hr />
+          {todo}
+        </div>
+        <div>
+          <h2>In Progress</h2>
+          <hr />
+          {progress}
+        </div>
+        <div>
+          <h2>Done</h2>
+          <hr />
+          {done}
+        </div>
+      </Cols>
     </Wrapper>
   );
 };

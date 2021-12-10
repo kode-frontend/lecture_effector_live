@@ -4,14 +4,16 @@ import { List } from "../ui/organisms/list";
 
 import {
   $currentTask,
-  $currentUserTasks,
-  setCurrentTask,
   setDraft,
   $draft,
   resetDraft,
   saveTask,
   resetCurrentTask,
 } from "../models/list";
+
+import { DoneColumnConnector } from "./done-column-connector";
+import { InprogressColumnConnector } from "./inprogress-column-connector";
+import { TodoColumnConnector } from "./todo-column-connector";
 
 import {
   $currentUser,
@@ -41,8 +43,6 @@ export const TodoListConnector = () => {
   const currentTask = useStore($currentTask);
   const currentUser = useStore($currentUser) || "";
   const users = useStore($users);
-
-  const tasksList = useStore($currentUserTasks);
 
   const draft = useStore($draft);
 
@@ -79,16 +79,9 @@ export const TodoListConnector = () => {
             userId: currentUser,
           })
         }
-        onClick={(id) => {
-          console.log("id", id);
-          setCurrentTask(id);
-        }}
-        list={tasksList.map((i) => ({
-          id: i.id,
-          text: i.title,
-          isLoading: false,
-          status: i.status,
-        }))}
+        done={<DoneColumnConnector />}
+        progress={<InprogressColumnConnector />}
+        todo={<TodoColumnConnector />}
       />
       {currentTask && (
         <TaskDetail
