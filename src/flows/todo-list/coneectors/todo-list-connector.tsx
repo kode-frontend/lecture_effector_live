@@ -26,7 +26,12 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { usersMock } from "./mocks";
 import { Task, TaskStatus } from "../../../models/types";
-import { changeStatus, removeTask } from "../../../models/tasks";
+import {
+  $hasTasks,
+  changeStatus,
+  removeTask,
+  syncTasksFx,
+} from "../../../models/tasks";
 
 const UserListPositioner = styled.div`
   position: fixed;
@@ -36,6 +41,16 @@ const UserListPositioner = styled.div`
 
 export const TodoListConnector = () => {
   const currentUser = useStore($currentUser) || "";
+
+  const hasTasks = useStore($hasTasks);
+
+  const isLoadingData = useStore(syncTasksFx.pending);
+
+  useEffect(() => {
+    if (!hasTasks) {
+      syncTasksFx();
+    }
+  }, [hasTasks]);
 
   useEffect(() => {
     setUsers(usersMock);
@@ -82,6 +97,7 @@ export const TodoListConnector = () => {
       </UserListPositioner>
 
       <List
+        isLoading={isLoadingData}
         onAddTask={(title) =>
           setDraft({
             id: String(Date.now()),

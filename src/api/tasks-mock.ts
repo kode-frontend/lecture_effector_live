@@ -1,4 +1,4 @@
-import { Task } from "./types";
+import { Task } from "../models/types";
 
 export const tasksMockData: Record<string, Task> = {
   "1": {
