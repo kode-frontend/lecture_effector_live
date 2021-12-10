@@ -25,8 +25,8 @@ import { Select } from "../ui/atoms";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { usersMock } from "./mocks";
-import { Task } from "../../../models/types";
-import { removeTask } from "../../../models/tasks";
+import { Task, TaskStatus } from "../../../models/types";
+import { changeStatus, removeTask } from "../../../models/tasks";
 
 const UserListPositioner = styled.div`
   position: fixed;
@@ -41,10 +41,14 @@ export const TodoListConnector = () => {
   }, []);
 
   const currentTask = useStore($currentTask);
+
+  console.log("currentTask", currentTask);
   const currentUser = useStore($currentUser) || "";
   const users = useStore($users);
 
   const draft = useStore($draft);
+
+  console.log("draft", draft);
 
   const usersOptions = Object.keys(users).map((id) => ({
     title: users[id].name,
@@ -57,6 +61,14 @@ export const TodoListConnector = () => {
     });
     resetCurrentTask();
     resetDraft();
+  };
+
+  const statusChangeHandler = (id: string, status: TaskStatus) => {
+    changeStatus({
+      id,
+      status,
+    });
+    resetCurrentTask();
   };
 
   return (
@@ -89,10 +101,16 @@ export const TodoListConnector = () => {
           data={currentTask}
           onRemove={removeTask}
           onSave={saveHandler}
+          onStatusChange={statusChangeHandler}
         />
       )}
       {draft && (
-        <TaskDetail onClose={resetDraft} data={draft} onSave={saveHandler} />
+        <TaskDetail
+          onClose={resetDraft}
+          data={draft}
+          onSave={saveHandler}
+          onStatusChange={statusChangeHandler}
+        />
       )}
     </>
   );

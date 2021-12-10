@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Task } from "../../../../models/types";
+import { Task, TaskStatus } from "../../../../models/types";
 import { TextArea, Input, HBox } from "../atoms";
 
 const Overlay = styled.div`
@@ -35,8 +35,16 @@ type Props = {
   onClose: () => void;
   onRemove?: (id: string) => void;
   onSave?: (formData: Task) => void;
+
+  onStatusChange: (id: string, status: TaskStatus) => void;
 };
-export const TaskDetail = ({ data, onRemove, onClose, onSave }: Props) => {
+export const TaskDetail = ({
+  data,
+  onRemove,
+  onClose,
+  onSave,
+  onStatusChange,
+}: Props) => {
   const defaultValues: Task = {
     description: "",
     id: "",
@@ -75,20 +83,23 @@ export const TaskDetail = ({ data, onRemove, onClose, onSave }: Props) => {
 
         <Buttons>
           <button
-            onClick={() => setFormData((prev) => ({ ...prev, status: "new" }))}
+            //onClick={() => setFormData((prev) => ({ ...prev, status: "new" }))}
+            onClick={() => onStatusChange(formData.id, "new")}
           >
             Todo
           </button>
           <button
-            onClick={() =>
-              setFormData((prev) => ({ ...prev, status: "progress" }))
-            }
+            // onClick={() =>
+            //   setFormData((prev) => ({ ...prev, status: "progress" }))
+            // }
+            onClick={() => onStatusChange(formData.id, "progress")}
           >
             In progress
           </button>
 
           <button
-            onClick={() => setFormData((prev) => ({ ...prev, status: "done" }))}
+            //onClick={() => setFormData((prev) => ({ ...prev, status: "done" }))}
+            onClick={() => onStatusChange(formData.id, "done")}
           >
             Resolve
           </button>
