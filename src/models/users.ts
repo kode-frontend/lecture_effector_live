@@ -26,3 +26,5 @@ $users.on(setUsers, (_, payload) =>
 );
 
 export const $currentUser = restore(setCurrentUser, "");
+
+persist({ store: $currentUser, key: "current-users" });

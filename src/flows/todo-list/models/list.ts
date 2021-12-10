@@ -1,4 +1,5 @@
 import { combine, createEvent, createStore, restore, sample } from "effector";
+import { persist } from "effector-storage/local";
 
 import { $tasks, addTask } from "../../../models/tasks";
 import { Task } from "../../../models/types";
@@ -21,6 +22,8 @@ $draft.reset(resetDraft);
 $currentTask.reset(resetCurrentTask);
 
 export const $currentUserTasks = createStore<Task[]>([]);
+
+persist({ store: $currentUserTasks, key: "currentUserTasks" });
 
 export const $todoList = $currentUserTasks.map((tasks) =>
   tasks.filter((t) => t.status === "new")

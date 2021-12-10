@@ -35,20 +35,20 @@ const UserListPositioner = styled.div`
 `;
 
 export const TodoListConnector = () => {
+  const currentUser = useStore($currentUser) || "";
+
   useEffect(() => {
     setUsers(usersMock);
-    setCurrentUser(usersMock[0].id);
-  }, []);
+    if (!currentUser) {
+      setCurrentUser(usersMock[0].id);
+    }
+  }, [currentUser]);
 
   const currentTask = useStore($currentTask);
 
-  console.log("currentTask", currentTask);
-  const currentUser = useStore($currentUser) || "";
   const users = useStore($users);
 
   const draft = useStore($draft);
-
-  console.log("draft", draft);
 
   const usersOptions = Object.keys(users).map((id) => ({
     title: users[id].name,
